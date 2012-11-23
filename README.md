@@ -1,4 +1,4 @@
-# Robocop
+# Robocop [![Build Status](https://secure.travis-ci.org/pjkelly/robocop.png?branch=master)](http://travis-ci.org/pjkelly/robocop)
 
 Robocop is a simple Rack middleware that inserts the `X-Robots-Tag` into the headers of all your responses.
 
