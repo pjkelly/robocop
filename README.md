@@ -72,7 +72,7 @@ It should be noted that if both the `:useragents` and `:directives` options are 
 ## TODO
 
 * Add support for `unavailable_after` directive.
-* Sanity checks for directives that are passed in. e.g. passing all, noindex, nofollow doesn't make any sense.
+* Sanity checks for directives that are passed in. e.g. passing all, noindex, nofollow doesn't make any sense and should not be allowed.
 
 ## Note on Patches / Pull Requests
 
