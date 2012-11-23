@@ -9,7 +9,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["me@pjkel.ly"]
   gem.description   = %q{Rack middleware that inserts the X-Robots-Tag into all responses.}
   gem.summary       = %q{Rack middleware that inserts the X-Robots-Tag into all responses.}
-  gem.homepage      = "http://rubygems.org/gems/robocop"
+  gem.homepage      = "https://github.com/pjkelly/robocop"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
