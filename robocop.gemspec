@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |gem|
   gem.name          = "robocop"
-  gem.version       = "0.1.0"
+  gem.version       = "0.1.1"
   gem.authors       = ["PJ Kelly"]
   gem.email         = ["me@pjkel.ly"]
   gem.description   = %q{Rack middleware that inserts the X-Robots-Tag into all responses.}
