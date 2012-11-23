@@ -23,7 +23,7 @@ gem 'robocop'
 To use Robocop in your Rails application, add the following line to your application config file (`config/application.rb` for Rails 3, `config/environment.rb` for Rails 2):
 
 ``` ruby
-config.middleware.use Robocop, :directives => %w(all)
+config.middleware.use Robocop::Middleware, :directives => %w(all)
 ```
 
 ### Other Rack Applications (Sinatra, Padrino, etc.)
@@ -31,7 +31,7 @@ config.middleware.use Robocop, :directives => %w(all)
 Simple add the following to your `config.ru`:
 
 ``` ruby
-use Robocop, :directives => %w(all)
+use Robocop::Middleware, :directives => %w(all)
 ```
 
 ## Options
@@ -53,7 +53,7 @@ The following directives can be passed in to Robocop's configuration:
 If you just want to specify a list of directives for all useragents to follow, simply pass in an array of directives with the `:directive` option:
 
 ``` ruby
-config.middleware.use Robocop, :directives => %w(noindex nofollow)
+config.middleware.use Robocop::Middleware, :directives => %w(noindex nofollow)
 ```
 
 ### Useragents
@@ -61,7 +61,7 @@ config.middleware.use Robocop, :directives => %w(noindex nofollow)
 If you want to give specific user agents unique sets of directives, you can do so by passing in the `:useragent` option:
 
 ``` ruby
-config.middleware.use Robocop, :useragents => {
+config.middleware.use Robocop::Middleware, :useragents => {
   :googlebot => %w(noindex nofollow, noimageindex),
   :otherbot => %w(none)
 }
