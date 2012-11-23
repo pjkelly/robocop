@@ -4,6 +4,8 @@ Robocop is a simple Rack middleware that inserts the `X-Robots-Tag` into the hea
 
 The `X-Robots-Tag` can be used in place of a `robots.txt` file or meta tags to tell crawlers what they're allowed to do with your content. See [this article](https://developers.google.com/webmasters/control-crawl-index/docs/robots_meta_tag) for more information.
 
+Tested against Ruby 1.8.7, 1.9.2, 1.9.3, and Rubinius & JRuby in both 1.8 and 1.9 mode.
+
 ## Installation
 
 The simplest way to install Robocop is to use [Bundler](http://gembundler.com/).
