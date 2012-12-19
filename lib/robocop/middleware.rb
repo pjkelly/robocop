@@ -14,13 +14,12 @@ module Robocop
 
     def initialize(app, options = {})
       @app = app
-      if options[:useragents]
-        @useragents = options[:useragents]
-      elsif options[:directives]
-        @directives = options[:directives]
-      else
-        @ignore = true
-      end
+      defaults = {
+        :defaults => {
+          :directives => %w(all)
+        }
+      }
+      @options = defaults.merge(options)
     end
 
     def call(env)
@@ -38,10 +37,23 @@ module Robocop
     end
 
     def add_robots_tag_header!(headers)
-      if @useragents
-        headers['X-Robots-Tag'] = @useragents.collect { |useragent, directives| [useragent, valid_directives(directives).join(', ')].join(': ') }.join("\n")
+      opts = options_for(headers['PATH_INFO'])
+      headers['X-Robots-Tag'] = header_value_for(opts)
+    end
+
+    def options_for(path)
+      if @options[:pages] && @options[:pages][path]
+        @options[:pages][path]
       else
-        headers['X-Robots-Tag'] = valid_directives(@directives).join(', ')
+        @options[:defaults]
+      end
+    end
+
+    def header_value_for(options)
+      if options[:useragents]
+        options[:useragents].collect { |useragent, directives| [useragent, valid_directives(directives).join(', ')].join(': ') }.join("\n")
+      else options[:directives]
+        valid_directives(options[:directives]).join(', ')
       end
     end
 
