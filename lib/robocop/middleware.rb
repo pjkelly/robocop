@@ -13,7 +13,7 @@ module Robocop
     )
 
     def initialize(app, options = {})
-      @app, = app
+      @app = app
       if options[:useragents]
         @useragents = options[:useragents]
       elsif options[:directives]
