@@ -1,29 +1,27 @@
-module Robocop
-  class Middleware
-    VALID_DIRECTIVES = %w(
-      all
-      noindex
-      nofollow
-      none
-      noarchive
-      nosnippet
-      noodp
-      notranslate
-      noimageindex
-    )
+require 'robocop/protocols'
 
-    def initialize(app, options = {})
+module Robocop
+  VALID_DIRECTIVES = [
+    :all,
+    :noindex,
+    :nofollow,
+    :none,
+    :noarchive,
+    :nosnippet,
+    :noodp,
+    :notranslate,
+    :noimageindex
+  ]
+
+  class Middleware
+    def initialize(app, &protocol_block)
       @app = app
-      defaults = {
-        :defaults => {
-          :directives => %w(all)
-        }
-      }
-      @options = defaults.merge(options)
+      @protocols = Protocols.new
+      @protocols.instance_eval(&protocol_block) if block_given?
     end
 
     def call(env)
-      if ignore?
+      if skip?
         @app.call(env)
       else
         status, headers, body = @app.call(env)
@@ -32,33 +30,16 @@ module Robocop
       end
     end
 
-    def ignore?
-      @ignore
+    def skip?
+      !protocols.pages? && !protocols.defaults?
+    end
+
+    def protocols
+      @protocols
     end
 
     def add_robots_tag_header!(headers)
-      opts = options_for(headers['PATH_INFO'])
-      headers['X-Robots-Tag'] = header_value_for(opts)
-    end
-
-    def options_for(path)
-      if @options[:pages] && @options[:pages][path]
-        @options[:pages][path]
-      else
-        @options[:defaults]
-      end
-    end
-
-    def header_value_for(options)
-      if options[:useragents]
-        options[:useragents].collect { |useragent, directives| [useragent, valid_directives(directives).join(', ')].join(': ') }.join("\n")
-      else options[:directives]
-        valid_directives(options[:directives]).join(', ')
-      end
-    end
-
-    def valid_directives(directives)
-      directives.reject { |d| !VALID_DIRECTIVES.include?(d) }
+      headers['X-Robots-Tag'] = protocols.to_http_header(headers['PATH_INFO'])
     end
   end
 end
