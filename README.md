@@ -23,7 +23,9 @@ gem 'robocop'
 To use Robocop in your Rails application, add the following line to your application config file (`config/application.rb` for Rails 3, `config/environment.rb` for Rails 2):
 
 ``` ruby
-config.middleware.use Robocop::Middleware, :directives => %w(all)
+config.middleware.use Robocop::Middleware do
+  directives :all
+end
 ```
 
 ### Other Rack Applications (Sinatra, Padrino, etc.)
@@ -31,7 +33,9 @@ config.middleware.use Robocop::Middleware, :directives => %w(all)
 Simple add the following to your `config.ru`:
 
 ``` ruby
-use Robocop::Middleware, :directives => %w(all)
+use Robocop::Middleware do
+  directives :all
+end
 ```
 
 ## Options
@@ -50,27 +54,34 @@ The following directives can be passed in to Robocop's configuration:
 
 ### Directives (useragent agnostic)
 
-If you just want to specify a list of directives for all useragents to follow, simply pass in an array of directives with the `:directive` option:
+If you just want to specify a list of directives for all useragents to follow, simply pass in a list of directives with the `directive` method:
 
 ``` ruby
-config.middleware.use Robocop::Middleware, :directives => %w(noindex nofollow)
+config.middleware.use Robocop::Middleware do
+  directives :noindex, :nofollow
+end
 ```
 
 ### Useragents
 
-If you want to give specific user agents unique sets of directives, you can do so by passing in the `:useragent` option:
+If you want to give specific user agents unique sets of directives, you can do so by using the `useragent` method:
 
 ``` ruby
-config.middleware.use Robocop::Middleware, :useragents => {
-  :googlebot => %w(noindex nofollow, noimageindex),
-  :otherbot => %w(none)
-}
+config.middleware.use Robocop::Middleware do
+  useragent :googlebot do
+    directive :all
+  end
+
+  directives :noindex, :nofollow
+end
 ```
 
-It should be noted that if both the `:useragents` and `:directives` options are passed in, the `:useragents` option takes precedence.
+It should be noted that if both the `useragents` and `directives` options are passed in, the `useragents` are output first in the header, followed by the generic directives.
 
 ## TODO
 
+* Re-factor & DRY up code
+* Directive validation
 * Add support for `unavailable_after` directive.
 * Sanity checks for directives that are passed in. e.g. passing all, noindex, nofollow doesn't make any sense and should not be allowed.
 
